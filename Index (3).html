@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alto.Bajón 🍔 | Burgers con Onda – Delivery</title>
+  <meta name="description" content="Las mejores hamburguesas con delivery. Cheeseburger, Oklahoma, Doble Bacon. Pedí ahora por WhatsApp." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0e0a06;
+      color: #f5f0e8;
+      overflow-x: hidden;
+    }
+
+    /* ── VARIABLES ── */
+    :root {
+      --orange: #ff6a00;
+      --amber:  #ffb300;
+      --gold:   #ffd700;
+      --dark:   #0e0a06;
+      --card:   #1a1006;
+      --border: rgba(255,180,0,0.25);
+      --radius: 18px;
+      --wsp:    #25d366;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 10px; }
+
+    /* ══════════════════════════════
+       NAV
+    ══════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(14,10,6,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; height: 64px;
+    }
+
+    /* Logo */
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; cursor: pointer;
+    }
+    .nav-logo img {
+      height: 44px; width: 44px; border-radius: 50%;
+      object-fit: cover; border: 2px solid var(--amber);
+    }
+    .nav-logo-placeholder {
+      height: 44px; width: 44px; border-radius: 50%;
+      background: linear-gradient(135deg,#ff6a00,#ffb300);
+      border: 2px solid var(--amber);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .nav-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 1px;
+      color: var(--gold);
+    }
+    .nav-brand span { color: #fff; }
+
+    /* Hamburger icon */
+    .hamburger-btn {
+      background: none; border: none; cursor: pointer;
+      display: flex; flex-direction: column; gap: 5px;
+      padding: 6px;
+    }
+    .hamburger-btn span {
+      display: block; width: 26px; height: 3px;
+      background: var(--amber); border-radius: 3px;
+      transition: all .3s ease;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* Desktop nav links - Aumentado el breakpoint para que no se mezcle en celulares anchos/tablets */
+    .nav-links {
+      display: none;
+      list-style: none; gap: 28px;
+    }
+    @media(min-width:992px) {
+      .nav-links { display: flex; }
+      .hamburger-btn { display: none; }
+    }
+    .nav-links a {
+      color: #f5f0e8; text-decoration: none;
+      font-weight: 600; font-size: 14px;
+      letter-spacing: .5px; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* Mobile drawer - Ajustado para que se oculte correctamente de fondo */
+    .mobile-menu {
+      position: fixed; top: 64px; left: 0; right: 0;
+      background: rgba(14,10,6,0.97);
+      backdrop-filter: blur(14px);
+      z-index: 899;
+      display: flex; flex-direction: column;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all .35s cubic-bezier(.4,0,.2,1);
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu.open { 
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0); 
+    }
+    .mobile-menu a {
+      padding: 16px 24px;
+      color: #f5f0e8; text-decoration: none;
+      font-weight: 600; font-size: 18px;
+      border-bottom: 1px solid var(--border);
+      transition: background .2s, color .2s;
+    }
+    .mobile-menu a:hover { background: rgba(255,179,0,.1); color: var(--gold); }
+
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    #inicio {
+      min-height: 100svh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 24px 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 30%, rgba(255,106,0,.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,179,0,.10) 0%, transparent 60%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="%230e0a06"/><rect x="0" y="0" width="60" height="60" fill="none" stroke="%23ffffff08" stroke-width="1"/></svg>') repeat;
+      z-index: 0;
+    }
+    #inicio > * { position: relative; z-index: 1; }
+
+    .hero-logo {
+      width: 120px; height: 120px; border-radius: 50%;
+      border: 4px solid var(--amber);
+      box-shadow: 0 0 40px rgba(255,179,0,.4), 0 0 80px rgba(255,106,0,.2);
+      margin-bottom: 20px;
+      object-fit: cover;
+    }
+    .hero-logo-placeholder {
+      width: 120px; height: 120px; border-radius: 50%;
+      border: 4px solid var(--amber);
+      box-shadow: 0 0 40px rgba(255,179,0,.4);
+      margin-bottom: 20px;
+      background: linear-gradient(135deg,#ff6a00,#ffb300);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 58px;
+    }
+
+    .hero-eyebrow {
+      font-size: 13px; font-weight: 700; letter-spacing: 3px;
+      color: var(--orange); text-transform: uppercase; margin-bottom: 8px;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 12vw, 96px);
+      line-height: 1; letter-spacing: 2px;
+      background: linear-gradient(135deg, #ffd700 0%, #ff6a00 60%, #ff3300 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+    }
+    .hero-subtitle {
+      font-size: clamp(16px, 4vw, 22px);
+      color: rgba(245,240,232,.75); margin-bottom: 28px;
+      max-width: 420px;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #ff6a00, #ffb300);
+      color: #0e0a06; font-weight: 800; font-size: 17px;
+      padding: 16px 36px; border-radius: 50px;
+      text-decoration: none; letter-spacing: .5px;
+      box-shadow: 0 8px 32px rgba(255,106,0,.45);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(255,106,0,.6); }
+    .hero-cta svg { width: 22px; height: 22px; fill: #0e0a06; }
+
+    .hero-badges {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      justify-content: center; margin-top: 24px;
+    }
+    .badge {
+      background: rgba(255,179,0,.12); border: 1px solid var(--border);
+      border-radius: 50px; padding: 6px 14px;
+      font-size: 13px; font-weight: 600; color: var(--amber);
+    }
+
+    /* scroll arrow */
+    .scroll-arrow {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      opacity: .5; animation: bounce 2s infinite;
+    }
+    .scroll-arrow span { font-size: 11px; color: var(--amber); letter-spacing: 2px; }
+    .scroll-arrow svg { width: 20px; fill: var(--amber); }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* ══════════════════════════════
+       SECTIONS COMMON
+    ══════════════════════════════ */
+    section { padding: 70px 20px; }
+    .section-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 3px;
+      color: var(--orange); text-transform: uppercase; margin-bottom: 6px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(34px, 8vw, 56px);
+      line-height: 1; margin-bottom: 10px;
+      color: var(--gold);
+    }
+    .section-desc { color: rgba(245,240,232,.65); font-size: 15px; max-width: 500px; }
+    .section-head { margin-bottom: 36px; }
+
+    /* ══════════════════════════════
+       MENU / BURGERS
+    ══════════════════════════════ */
+    #menu { background: #0e0a06; }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px; max-width: 900px; margin: 0 auto;
+    }
+    @media(min-width:640px) { .menu-grid { grid-template-columns: 1fr 1fr; } }
+    @media(min-width:900px) { .menu-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .burger-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+      display: flex; flex-direction: column;
+    }
+    .burger-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(255,106,0,.3);
+      border-color: var(--orange);
+    }
+
+    .burger-img-wrap {
+      position: relative; aspect-ratio: 16/9; overflow: hidden;
+      background: #1a1006;
+    }
+    .burger-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .burger-card:hover .burger-img-wrap img { transform: scale(1.06); }
+
+    .burger-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px;
+      background: linear-gradient(135deg, #1a1006, #2a1810);
+    }
+
+    .promo-badge {
+      position: absolute; top: 10px; right: 10px;
+      background: var(--orange); color: #fff;
+      font-size: 11px; font-weight: 800; letter-spacing: 1px;
+      padding: 4px 10px; border-radius: 50px; text-transform: uppercase;
+    }
+    .qty-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: linear-gradient(135deg,#ffd700,#ff6a00);
+      color: #0e0a06; font-family: 'Bebas Neue',sans-serif;
+      font-size: 22px; padding: 2px 12px; border-radius: 8px;
+    }
+
+    .burger-body { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+    .burger-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px; color: var(--gold);
+      letter-spacing: 1px; margin-bottom: 6px;
+    }
+    .burger-tags {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
+    }
+    .tag {
+      background: rgba(255,179,0,.1); border: 1px solid rgba(255,179,0,.25);
+      border-radius: 50px; padding: 3px 10px;
+      font-size: 12px; color: var(--amber); font-weight: 600;
+    }
+    .burger-desc { font-size: 13px; color: rgba(245,240,232,.6); margin-bottom: 14px; flex: 1; }
+    .burger-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .burger-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px; color: #fff; letter-spacing: 1px;
+    }
+    .burger-price span { font-size: 18px; color: var(--amber); }
+
+    .btn-pedir {
+      background: linear-gradient(135deg,#ff6a00,#ffb300);
+      color: #0e0a06; font-weight: 800; font-size: 13px;
+      padding: 10px 18px; border-radius: 50px; border: none;
+      cursor: pointer; letter-spacing: .5px;
+      transition: transform .2s, box-shadow .2s;
+      white-space: nowrap;
+    }
+    .btn-pedir:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255,106,0,.5); }
+
+    /* ══════════════════════════════
+       PROMO BANNER
+    ══════════════════════════════ */
+    .promo-banner {
+      background: linear-gradient(135deg, #ff6a00 0%, #ffb300 50%, #ffd700 100%);
+      padding: 40px 24px; text-align: center;
+      border-radius: 24px; max-width: 900px; margin: 0 auto;
+    }
+    .promo-banner h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px,8vw,56px); color: #0e0a06;
+      line-height: 1; margin-bottom: 8px;
+    }
+    .promo-banner p { color: rgba(14,10,6,.75); font-weight: 600; margin-bottom: 20px; }
+    .btn-promo {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #0e0a06; color: var(--gold);
+      font-weight: 800; font-size: 16px; padding: 14px 32px;
+      border-radius: 50px; text-decoration: none; letter-spacing: .5px;
+      transition: transform .2s, box-shadow .2s;
+      border: 2px solid rgba(255,215,0,.3);
+    }
+    .btn-promo:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+
+    /* ══════════════════════════════
+       NOSOTROS
+    ══════════════════════════════ */
+    #nosotros {
+      background: #100c08;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .nosotros-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr;
+      gap: 36px; align-items: center;
+    }
+    @media(min-width:680px) { .nosotros-inner { grid-template-columns: 1fr 1fr; } }
+
+    .nosotros-text .section-desc { max-width: 100%; font-size: 16px; line-height: 1.7; }
+    .stats-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 24px;
+    }
+    .stat-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px; text-align: center;
+    }
+    .stat-box strong {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px; color: var(--gold);
+    }
+    .stat-box span { font-size: 12px; color: rgba(245,240,232,.55); font-weight: 600; }
+
+    .nosotros-img-wrap {
+      border-radius: 20px; overflow: hidden;
+      border: 2px solid var(--border);
+      box-shadow: 0 20px 60px rgba(255,106,0,.2);
+      aspect-ratio: 1;
+      background: linear-gradient(135deg,#1a1006,#2a1810);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 100px;
+    }
+
+    /* ══════════════════════════════
+       RESEÑAS
+    ══════════════════════════════ */
+    #resenas { background: #0e0a06; }
+    .reviews-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 18px; max-width: 900px; margin: 0 auto;
+    }
+    @media(min-width:580px) { .reviews-grid { grid-template-columns: 1fr 1fr; } }
+    @media(min-width:900px) { .reviews-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .review-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px;
+      transition: border-color .2s;
+    }
+    .review-card:hover { border-color: var(--amber); }
+    .review-stars { color: var(--gold); font-size: 16px; margin-bottom: 10px; }
+    .review-text { font-size: 14px; color: rgba(245,240,232,.7); line-height: 1.6; margin-bottom: 14px; }
+    .review-author { display: flex; align-items: center; gap: 10px; }
+    .review-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg,#ff6a00,#ffb300);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 15px; color: #0e0a06; flex-shrink: 0;
+    }
+    .review-name { font-weight: 700; font-size: 14px; color: var(--amber); }
+    .review-date { font-size: 12px; color: rgba(245,240,232,.4); }
+
+    /* ══════════════════════════════
+       INSTAGRAM CTA
+    ══════════════════════════════ */
+    #redes {
+      background: linear-gradient(135deg,#100c08,#0e0a06);
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .ig-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+      color: #fff; font-weight: 800; font-size: 16px;
+      padding: 14px 30px; border-radius: 50px; text-decoration: none;
+      box-shadow: 0 8px 28px rgba(220,39,67,.4);
+      transition: transform .2s, box-shadow .2s; margin-top: 20px;
+    }
+    .ig-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(220,39,67,.6); }
+    .ig-btn svg { width: 20px; height: 20px; fill: #fff; }
+
+    /* ══════════════════════════════
+       FOOTER
+    ══════════════════════════════ */
+    footer {
+      background: #080603;
+      border-top: 1px solid var(--border);
+      padding: 32px 20px;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px; color: var(--gold); margin-bottom: 8px;
+    }
+    footer p { font-size: 13px; color: rgba(245,240,232,.35); }
+    footer a { color: var(--amber); text-decoration: none; }
+
+    /* ══════════════════════════════
+       WHATSAPP FLOTANTE DRAGGABLE
+    ══════════════════════════════ */
+    #wsp-btn {
+      position: fixed;
+      z-index: 9999;
+      bottom: 24px; right: 24px;
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: var(--wsp);
+      box-shadow: 0 6px 28px rgba(37,211,102,.55);
+      display: flex; align-items: center; justify-content: center;
+      cursor: grab;
+      transition: box-shadow .25s;
+      user-select: none; touch-action: none;
+    }
+    #wsp-btn:hover { box-shadow: 0 10px 36px rgba(37,211,102,.75); }
+    #wsp-btn.pulse { animation: wspPulse 2.5s ease-in-out infinite; }
+    #wsp-btn svg { width: 36px; height: 36px; fill: #fff; pointer-events: none; }
+    #wsp-label {
+      position: absolute; right: 76px; top: 50%; transform: translateY(-50%);
+      background: #0e0a06; border: 1px solid var(--wsp);
+      color: #f5f0e8; font-size: 12px; font-weight: 600;
+      padding: 5px 11px; border-radius: 8px; white-space: nowrap;
+      pointer-events: none;
+      opacity: 0; transition: opacity .2s;
+    }
+    #wsp-btn:hover #wsp-label { opacity: 1; }
+
+    @keyframes wspPulse {
+      0%,100% { box-shadow: 0 6px 28px rgba(37,211,102,.55), 0 0 0 0 rgba(37,211,102,.6); }
+      50%      { box-shadow: 0 6px 28px rgba(37,211,102,.55), 0 0 0 16px rgba(37,211,102,0); }
+    }
+
+    /* ══════════════════════════════
+       MODAL DE PEDIDO
+    ══════════════════════════════ */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(0,0,0,.8); backdrop-filter: blur(6px);
+      display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px 28px 0 0;
+      padding: 28px 24px 36px;
+      width: 100%; max-width: 480px;
+      transform: translateY(60px);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute; top: 14px; right: 18px;
+      background: rgba(255,255,255,.08); border: none;
+      color: #fff; font-size: 20px; width: 34px; height: 34px;
+      border-radius: 50%; cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .modal-close:hover { background: rgba(255,255,255,.15); }
+    .modal-box { position: relative; }
+
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px; color: var(--gold); margin-bottom: 4px;
+    }
+    .modal-selected-item {
+      background: rgba(255,106,0,.12); border: 1px solid rgba(255,106,0,.3);
+      border-radius: 10px; padding: 10px 14px; margin-bottom: 18px;
+      font-size: 14px; font-weight: 700; color: var(--amber);
+    }
+    .modal-field {
+      margin-bottom: 14px;
+    }
+    .modal-field label {
+      display: block; font-size: 12px; font-weight: 700;
+      color: rgba(245,240,232,.5); letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .modal-field input, .modal-field select, .modal-field textarea {
+      width: 100%;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 16px;
+      color: #f5f0e8;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .modal-field input:focus, .modal-field textarea:focus {
+      border-color: var(--amber);
+    }
+    .modal-field textarea { resize: none; height: 70px; }
+
+    .btn-enviar-pedido {
+      width: 100%; padding: 16px;
+      background: linear-gradient(135deg,#25d366,#128c7e);
+      color: #fff; font-weight: 800; font-size: 16px;
+      border: none; border-radius: 50px; cursor: pointer;
+      letter-spacing: .5px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 8px 28px rgba(37,211,102,.4);
+      transition: transform .2s, box-shadow .2s;
+      margin-top: 6px;
+    }
+    .btn-enviar-pedido:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(37,211,102,.6); }
+    .btn-enviar-pedido svg { width: 22px; height: 22px; fill: #fff; }
+
+    .btn-directo {
+      width: 100%; padding: 14px;
+      background: transparent;
+      color: rgba(245,240,232,.7); font-weight: 600; font-size: 14px;
+      border: 1px solid rgba(255,255,255,.1); border-radius: 50px; cursor: pointer;
+      margin-top: 10px; transition: all .2s;
+    }
+    .btn-directo:hover {
+      background: rgba(255,255,255,.05);
+      color: #fff; border-color: rgba(255,255,255,.2);
+    }
+
+    /* ══════════════════════════════
+       URGENCY BAR
+    ══════════════════════════════ */
+    .urgency-bar {
+      background: linear-gradient(90deg,#ff6a00,#ff3300,#ff6a00);
+      background-size: 200%;
+      animation: shimmer 3s linear infinite;
+      text-align: center; padding: 10px 16px;
+      font-size: 13px; font-weight: 700;
+      color: #fff; letter-spacing: .5px;
+      position: sticky; top: 64px; z-index: 800;
+    }
+    @keyframes shimmer { 0%{background-position:0%} 100%{background-position:200%} }
+
+    /* Smooth sections max width */
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* ══════════════════════════════
+       DELIVERY INFO
+    ══════════════════════════════ */
+    #info { background: #100c08; border-top: 1px solid var(--border); }
+    .info-cards {
+      display: grid; grid-template-columns: 1fr;
+      gap: 16px; max-width: 900px; margin: 0 auto;
+    }
+    @media(min-width:580px) { .info-cards { grid-template-columns: 1fr 1fr 1fr; } }
+    .info-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px 20px; text-align: center;
+    }
+    .info-icon { font-size: 36px; margin-bottom: 10px; }
+    .info-card h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--gold); margin-bottom:4px; }
+    .info-card p { font-size:13px; color:rgba(245,240,232,.55); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#inicio" onclick="closeMobile()">
+    <div class="nav-logo-placeholder">🐶</div>
+    <span class="nav-brand">Alto.<span>Bajón</span></span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#menu">Menú</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#resenas">Reseñas</a></li>
+    <li><a href="#redes">Instagram</a></li>
+    <li><a href="#info">Delivery</a></li>
+  </ul>
+
+  <button class="hamburger-btn" id="hambBtn" aria-label="Menú" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<nav class="mobile-menu" id="mobileMenu">
+  <a href="#menu"      onclick="closeMobile()">🍔 Menú</a>
+  <a href="#nosotros"  onclick="closeMobile()">🏠 Nosotros</a>
+  <a href="#resenas"   onclick="closeMobile()">⭐ Reseñas</a>
+  <a href="#redes"     onclick="closeMobile()">📸 Instagram</a>
+  <a href="#info"      onclick="closeMobile()">🛵 Delivery</a>
+</nav>
+
+<div class="urgency-bar">
+  🔥 ¡PROMOS ACTIVAS HOY! — Pedí ahora y recibí calentito 🍔 · WhatsApp +5491140268968
+</div>
+
+<section id="inicio">
+  <div class="hero-bg"></div>
+
+  <div class="hero-logo-placeholder">🐶</div>
+
+  <p class="hero-eyebrow">🚀 Delivery de hamburguesas</p>
+  <h1 class="hero-title">ALTO.<br>BAJÓN</h1>
+  <p class="hero-subtitle">Las burgers que te hacen el día. Delivery rápido, sabor que te vuela la cabeza.</p>
+
+  <a href="#menu" class="hero-cta">
+    <svg viewBox="0 0 24 24"><path d="M18.364 5.636a9 9 0 1 1-12.728 0A9 9 0 0 1 18.364 5.636ZM12 7v5l3 3"/></svg>
+    Ver el Menú
+  </a>
+
+  <div class="hero-badges">
+    <span class="badge">📦 Delivery a domicilio</span>
+    <span class="badge">⚡ Entrega rápida</span>
+    <span class="badge">🔥 Recién hechas</span>
+  </div>
+
+  <div class="scroll-arrow">
+    <span>VER MÁS</span>
+    <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-label">🍔 Nuestras promos</p>
+      <h2 class="section-title">EL MENÚ</h2>
+      <p class="section-desc">Todas vienen a full — carne, queso en punto, pan brioche. Elegí la tuya y pedila ya.</p>
+    </div>
+
+    <div class="menu-grid">
+
+      <div class="burger-card">
+        <div class="burger-img-wrap">
+          <div class="burger-img-placeholder">🍔</div>
+          <span class="qty-badge">x2</span>
+          <span class="promo-badge">PROMO</span>
+        </div>
+        <div class="burger-body">
+          <h3 class="burger-name">Cheeseburger Doble</h3>
+          <div class="burger-tags">
+            <span class="tag">1 medallon </span>
+            <span class="tag">Cheddar x2</span>
+            <span class="tag">+ Papas x2</span>
+          </div>
+          <p class="burger-desc">1 medallon jugosos con doble queso cheddar fundido, pan brioche tostado y papas crujientes. El combo ideal para compartir (o no 😏).</p>
+          <div class="burger-footer">
+            <div class="burger-price"><span>$</span>16.000</div>
+            <button class="btn-pedir" onclick="abrirModal('x2 Cheeseburger Doble + Papas x2 — $16.000')">
+              🛒 Pedir
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="burger-card">
+        <div class="burger-img-wrap">
+          <div class="burger-img-placeholder">🍔</div>
+          <span class="qty-badge">x2</span>
+          <span class="promo-badge">⭐ TOP</span>
+        </div>
+        <div class="burger-body">
+          <h3 class="burger-name">Oklahoma Burger 🇺🇸</h3>
+          <div class="burger-tags">
+            <span class="tag">2 medallones</span>
+            <span class="tag">Estilo americano</span>
+            <span class="tag">Smash</span>
+          </div>
+          <p class="burger-desc">Nuestra burger estrella estilo americano. Doble carne aplastada a la plancha, queso cheddar, bacon crujiente y porcion de papas x2.</p>
+          <div class="burger-footer">
+            <div class="burger-price"><span>$</span>17.000</div>
+            <button class="btn-pedir" onclick="abrirModal('x2 Oklahoma Burger — $17.000')">
+              🛒 Pedir
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="burger-card">
+        <div class="burger-img-wrap">
+          <div class="burger-img-placeholder">🥓</div>
+          <span class="qty-badge">x2</span>
+          <span class="promo-badge">🔥 HOT</span>
+        </div>
+        <div class="burger-body">
+          <h3 class="burger-name">Doble Bacon y Cheddar</h3>
+          <div class="burger-tags">
+            <span class="tag">Bacon crocante</span>
+            <span class="tag">Cheddar extra</span>
+            <span class="tag">+ Papas</span>
+          </div>
+          <p class="burger-desc">Para los que van en serio. Doble carne con doble bacon crocante por encima, queso cheddar x2 fundido a borbotones, cebolla caramelizada y papas x2 que no fallan.</p>
+          <div class="burger-footer">
+            <div class="burger-price"><span>$</span>18.000</div>
+            <button class="btn-pedir" onclick="abrirModal('x2 Doble Bacon y Cheddar + Papas — $18.000')">
+              🛒 Pedir
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section style="padding:0 20px 60px;">
+  <div class="promo-banner">
+    <h2>¿TENÉS HAMBRE AHORA?</h2>
+    <p>Pedí tu combo hoy y recibilo en menos de lo que pensás 🛵</p>
+    <a href="#menu" class="btn-promo">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffd700"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/></svg>
+      Elegir mi burger
+    </a>
+  </div>
+</section>
+
+<section id="info">
+  <div class="section-head container">
+    <p class="section-label">🛵 Cómo funciona</p>
+    <h2 class="section-title">DELIVERY A TU PUERTA</h2>
+  </div>
+  <div class="info-cards">
+    <div class="info-card">
+      <div class="info-icon">🍔</div>
+      <h3>Elegís tu promo</h3>
+      <p>Cheeseburger, Oklahoma o Bacon. Todas están buenísimas.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">📱</div>
+      <h3>Pedís por WhatsApp</h3>
+      <p>Te mandamos al link directo. Solo ponés tu nombre y dirección.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">🚀</div>
+      <h3>Recibís calentito</h3>
+      <p>Delivery rápido a tu domicilio. Recién hecha, recién llegada.</p>
+    </div>
+  </div>
+</section>
+
+<section id="nosotros">
+  <div class="nosotros-inner">
+    <div class="nosotros-text">
+      <p class="section-label">🏠 Quiénes somos</p>
+      <h2 class="section-title">ALTO. BAJÓN.</h2>
+      <p class="section-desc">
+        Somos Alto.Bajón, nacimos con una sola misión: hacer las burgers más ricas del delivery. Sin vueltas, sin ingredientes mediocres — solo carne real, queso de verdad y ganas de que cada pedido te vuele la cabeza.<br><br>
+        Inauguramos en febrero de 2026 y desde el día uno el teléfono no paró de sonar. 🐶🍔
+      </p>
+      <div class="stats-row">
+        <div class="stat-box">
+          <strong>100%</strong>
+          <span>Carne real</span>
+        </div>
+        <div class="stat-box">
+          <strong>⚡</strong>
+          <span>Entrega rápida</span>
+        </div>
+        <div class="stat-box">
+          <strong>3</strong>
+          <span>Combos épicos</span>
+        </div>
+        <div class="stat-box">
+          <strong>😍</strong>
+          <span>Clientes felices</span>
+        </div>
+      </div>
+    </div>
+    <div class="nosotros-img-wrap">🐶</div>
+  </div>
+</section>
+
+<section id="resenas">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-label">⭐ Lo que dicen</p>
+      <h2 class="section-title">RESEÑAS</h2>
+      <p class="section-desc">Más de uno ya las probó. Acá van sus palabras.</p>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Pedí la Oklahoma y llegó recién hecha, calentita y con el queso todavía derritiéndose. No exagero cuando digo que fue la mejor burger que comí en mi vida. Volvería a pedir mañana."</p>
+        <div class="review-author">
+          <div class="review-avatar">M</div>
+          <div><p class="review-name">Martina G.</p><p class="review-date">Hace 2 semanas</p></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"La Doble Bacon y Cheddar es una locura. El bacon crocante, el queso a los gritos... llegó en tiempo récord. Definitivamente el mejor delivery de burgers de la zona."</p>
+        <div class="review-author">
+          <div class="review-avatar">J</div>
+          <div><p class="review-name">Javier P.</p><p class="review-date">Hace 1 semana</p></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Pedí el combo de Cheeseburger para compartir con mi hermano y nos quedamos cortos jaja. El precio es una ganga para lo que te dan. Sin dudas repetimos."</p>
+        <div class="review-author">
+          <div class="review-avatar">L</div>
+          <div><p class="review-name">Lucía R.</p><p class="review-date">Hace 3 días</p></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Súper atentos por WhatsApp, en 10 minutos ya tenía confirmación del pedido. La burger llegó perfecta, caliente y el pan no se deshizo. Eso dice todo."</p>
+        <div class="review-author">
+          <div class="review-avatar">F</div>
+          <div><p class="review-name">Facundo T.</p><p class="review-date">Hace 5 días</p></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Primera vez que pido y ya soy cliente fijo. La Oklahoma con sus salsas especiales es otro nivel. Las papas llegaron crocantes. ¡10/10 los recomiendo con los ojos cerrados!"</p>
+        <div class="review-author">
+          <div class="review-avatar">V</div>
+          <div><p class="review-name">Valentina S.</p><p class="review-date">Hace 1 semana</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="redes">
+  <div class="container" style="text-align:center;">
+    <p class="section-label">📸 Seguinos</p>
+    <h2 class="section-title">INSTAGRAM</h2>
+    <p class="section-desc" style="margin:0 auto;">Fotos reales, promociones exclusivas y novedades antes que nadie. Dale follow y no te perdés nada.</p>
+    <a href="https://www.instagram.com/alto.bajon.ok?igsh=MTRocHlxOHQ2cTF6dg==" target="_blank" rel="noopener" class="ig-btn">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      @alto.bajon.ok
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">ALTO.BAJÓN 🍔</div>
+  <p style="margin-bottom:8px;">Delivery de hamburguesas · Buenos Aires</p>
+  <p>
+    <a href="https://wa.me/5491140268978" target="_blank">📱 +5491140268968</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.instagram.com/alto.bajon.ok" target="_blank">📸 @alto.bajon.ok</a>
+  </p>
+  <p style="margin-top:14px; font-size:12px;">© 2026 Alto.Bajón · Hecho con 🍔 y 💛. Creado por VFA Digital </p>
+</footer>
+
+<div id="wsp-btn" class="pulse" title="Pedí por WhatsApp" aria-label="WhatsApp">
+  <span id="wsp-label">¡Pedí ahora!</span>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="cerrarModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="cerrarModalBtn()">✕</button>
+    <h3 class="modal-title">🍔 Tu Pedido</h3>
+    
+    <p style="font-size:13px;color:rgba(245,240,232,.5);margin-bottom:14px;">
+      Completá los datos (es para ahorrar tiempo y no preguntarte todo después) o elegí ir directo a WhatsApp.
+    </p>
+
+    <div class="modal-selected-item" id="modalItem">x2 Cheeseburger Doble + Papas — $16.000</div>
+
+    <div class="modal-field">
+      <label>Tu nombre</label>
+      <input type="text" id="pedidoNombre" placeholder="Ej: Martina García" />
+    </div>
+    <div class="modal-field">
+      <label>Tu número (para coordinar)</label>
+      <input type="tel" id="pedidoTel" placeholder="Ej: 1134567890" />
+    </div>
+    <div class="modal-field">
+      <label>Dirección de entrega</label>
+      <input type="text" id="pedidoDireccion" placeholder="Calle, número, piso/depto" />
+    </div>
+    <div class="modal-field">
+      <label>¿Algo más? (opcional)</label>
+      <textarea id="pedidoExtra" placeholder="Sin cebolla, extra salsa, etc."></textarea>
+    </div>
+
+    <button class="btn-enviar-pedido" onclick="enviarPedido()">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+      Enviar con los datos
+    </button>
+    
+    <button type="button" class="btn-directo" onclick="enviarPedido(true)">
+      Ir directo a WhatsApp sin datos
+    </button>
+  </div>
+</div>
+
+<script>
+  // ── MOBILE MENU ──
+  function toggleMobile() {
+    const btn  = document.getElementById('hambBtn');
+    const menu = document.getElementById('mobileMenu');
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+  }
+  function closeMobile() {
+    document.getElementById('hambBtn').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // ── MODAL ──
+  let itemSeleccionado = '';
+  function abrirModal(item) {
+    itemSeleccionado = item;
+    document.getElementById('modalItem').textContent = item;
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function cerrarModalBtn() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function cerrarModal(e) {
+    if (e.target === document.getElementById('modalOverlay')) cerrarModalBtn();
+  }
+
+  // Función modificada para ser flexible y opcional
+  function enviarPedido(omitirDatos = false) {
+    let msgParts = [
+      '🍔 *NUEVO PEDIDO — Alto.Bajón*',
+      '',
+      `📦 *Pedido:* ${itemSeleccionado}`,
+      ''
+    ];
+
+    if (!omitirDatos) {
+      const nombre    = document.getElementById('pedidoNombre').value.trim();
+      const tel       = document.getElementById('pedidoTel').value.trim();
+      const direccion = document.getElementById('pedidoDireccion').value.trim();
+      const extra     = document.getElementById('pedidoExtra').value.trim();
+
+      if (nombre) msgParts.push(`👤 *Nombre:* ${nombre}`);
+      if (tel) msgParts.push(`📱 *Teléfono:* ${tel}`);
+      if (direccion) msgParts.push(`📍 *Dirección de entrega:* ${direccion}`);
+      if (extra) msgParts.push(`📝 *Notas:* ${extra}`);
+      
+      // Si el usuario le dio al botón principal pero dejó todo vacío:
+      if (!nombre && !tel && !direccion && !extra) {
+        msgParts.push('*(Te paso mis datos por acá)*');
+      }
+    } else {
+      // Si hizo click en "Ir directo a WhatsApp sin datos"
+      msgParts.push('*(Te paso mis datos por acá)*');
+    }
+
+    msgParts.push('', '¡Muchas gracias! 🙌');
+
+    const msg = msgParts.join('\n');
+    const numero = '5491140268978';
+    const url    = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+    cerrarModalBtn();
+  }
+
+  // ── WSP DIRECTO (desde botón flotante) ──
+  document.getElementById('wsp-btn').addEventListener('click', function(e) {
+    if (this._dragged) { this._dragged = false; return; }
+    const msg = '¡Hola Alto.Bajón! 🍔 Quiero hacer un pedido. ¿Me podés contar las opciones disponibles?';
+    window.open(`https://wa.me/5491140268978?text=${encodeURIComponent(msg)}`, '_blank');
+  });
+
+  // ── DRAG FLOTANTE ──
+  (function() {
+    const el = document.getElementById('wsp-btn');
+    let isDragging = false, startX, startY, origX, origY, moved = false;
+
+    function getPos() {
+      const r = el.getBoundingClientRect();
+      return { x: r.left, y: r.top };
+    }
+
+    function onStart(e) {
+      isDragging = true; moved = false;
+      const pt = e.touches ? e.touches[0] : e;
+      startX = pt.clientX; startY = pt.clientY;
+      const p = getPos();
+      origX = p.x; origY = p.y;
+      el.style.cursor = 'grabbing';
+      el.style.transition = 'none';
+      e.preventDefault();
+    }
+
+    function onMove(e) {
+      if (!isDragging) return;
+      const pt = e.touches ? e.touches[0] : e;
+      const dx = pt.clientX - startX;
+      const dy = pt.clientY - startY;
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+      let newX = origX + dx;
+      let newY = origY + dy;
+      const maxX = window.innerWidth  - el.offsetWidth;
+      const maxY = window.innerHeight - el.offsetHeight;
+      newX = Math.max(0, Math.min(newX, maxX));
+      newY = Math.max(0, Math.min(newY, maxY));
+      el.style.right  = 'auto';
+      el.style.bottom = 'auto';
+      el.style.left   = newX + 'px';
+      el.style.top    = newY + 'px';
+      e.preventDefault();
+    }
+
+    function onEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      el.style.cursor = 'grab';
+      el.style.transition = '';
+      if (moved) el._dragged = true;
+    }
+
+    el.addEventListener('mousedown',  onStart, { passive: false });
+    el.addEventListener('touchstart', onStart, { passive: false });
+    document.addEventListener('mousemove',  onMove,  { passive: false });
+    document.addEventListener('touchmove',  onMove,  { passive: false });
+    document.addEventListener('mouseup',    onEnd);
+    document.addEventListener('touchend',   onEnd);
+  })();
+</script>
+</body>
+</html>
