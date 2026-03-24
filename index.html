@@ -1169,30 +1169,35 @@
 
     if (!omitirDatos) {
       const nombre    = document.getElementById('pedidoNombre').value.trim();
-      const tel       = document.getElementById('pedidoTel').value.trim();
       const direccion = document.getElementById('pedidoDireccion').value.trim();
       const extra     = document.getElementById('pedidoExtra').value.trim();
 
       if (nombre) msgParts.push(`👤 *Nombre:* ${nombre}`);
-      if (tel) msgParts.push(`📱 *Teléfono:* ${tel}`);
       if (direccion) msgParts.push(`📍 *Dirección de entrega:* ${direccion}`);
       if (extra) msgParts.push(`📝 *Notas:* ${extra}`);
       
-      // Si el usuario le dio al botón principal pero dejó todo vacío:
-      if (!nombre && !tel && !direccion && !extra) {
+      if (!nombre && !direccion && !extra) {
         msgParts.push('*(Te paso mis datos por acá)*');
       }
     } else {
-      // Si hizo click en "Ir directo a WhatsApp sin datos"
       msgParts.push('*(Te paso mis datos por acá)*');
     }
 
     msgParts.push('', '¡Muchas gracias! 🙌');
 
     const msg = msgParts.join('\n');
-    const numero = '5491140268968';
-    const url    = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
+    const numero = '5491140268978';
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
+    
+    // Usar anchor click para funcionar en mobile sin bloqueo de popups
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
     cerrarModalBtn();
   }
 
