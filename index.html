@@ -64,6 +64,10 @@
       border: 2px solid var(--amber);
       display: flex; align-items: center; justify-content: center;
       font-size: 22px;
+      overflow: hidden;
+    }
+    .nav-logo-placeholder img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
     }
     .nav-brand {
       font-family: 'Bebas Neue', sans-serif;
@@ -469,7 +473,7 @@
       user-select: none; touch-action: none;
     }
     #wsp-btn:hover { box-shadow: 0 10px 36px rgba(37,211,102,.75); }
-    #wsp-btn.pulse { animation: wspPulse 2.5s ease-in-out infinite; }
+    #wsp-btn.pulse { animation: wspBlink 2s step-start infinite; }
     #wsp-btn svg { width: 36px; height: 36px; fill: #fff; pointer-events: none; }
     #wsp-label {
       position: absolute; right: 76px; top: 50%; transform: translateY(-50%);
@@ -481,9 +485,17 @@
     }
     #wsp-btn:hover #wsp-label { opacity: 1; }
 
-    @keyframes wspPulse {
-      0%,100% { box-shadow: 0 6px 28px rgba(37,211,102,.55), 0 0 0 0 rgba(37,211,102,.6); }
-      50%      { box-shadow: 0 6px 28px rgba(37,211,102,.55), 0 0 0 16px rgba(37,211,102,0); }
+    @keyframes wspBlink {
+      0%,49%  { 
+        box-shadow: 0 6px 28px rgba(37,211,102,.55), 0 0 0 0 rgba(37,211,102,.8);
+        background: #25d366;
+        transform: scale(1);
+      }
+      50%,100% { 
+        box-shadow: 0 6px 40px rgba(37,211,102,.9), 0 0 0 12px rgba(37,211,102,.25);
+        background: #1ead55;
+        transform: scale(1.08);
+      }
     }
 
     /* ══════════════════════════════
@@ -611,13 +623,111 @@
     .info-icon { font-size: 36px; margin-bottom: 10px; }
     .info-card h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--gold); margin-bottom:4px; }
     .info-card p { font-size:13px; color:rgba(245,240,232,.55); }
+    /* ══════════════════════════════
+       COMBO QUESTIONNAIRE MODAL (WSP)
+    ══════════════════════════════ */
+    .combo-modal-overlay {
+      position: fixed; inset: 0; z-index: 8500;
+      background: rgba(0,0,0,.85); backdrop-filter: blur(8px);
+      display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .combo-modal-overlay.open { opacity: 1; pointer-events: all; }
+    .combo-modal-box {
+      background: #1a1006;
+      border: 1px solid var(--border);
+      border-radius: 28px 28px 0 0;
+      padding: 28px 24px 40px;
+      width: 100%; max-width: 500px;
+      max-height: 90svh;
+      overflow-y: auto;
+      transform: translateY(80px);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      position: relative;
+    }
+    .combo-modal-overlay.open .combo-modal-box { transform: translateY(0); }
+
+    .combo-modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 30px; color: var(--gold); margin-bottom: 4px;
+    }
+    .combo-modal-subtitle {
+      font-size: 13px; color: rgba(245,240,232,.5); margin-bottom: 20px;
+    }
+
+    .combo-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+
+    .combo-item {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px;
+      transition: border-color .2s, background .2s;
+    }
+    .combo-item.selected {
+      border-color: var(--orange);
+      background: rgba(255,106,0,.1);
+    }
+    .combo-item-img {
+      width: 60px; height: 60px; border-radius: 10px;
+      object-fit: cover; flex-shrink: 0;
+      background: #2a1810;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      overflow: hidden;
+    }
+    .combo-item-img img { width:100%; height:100%; object-fit:cover; }
+    .combo-item-info { flex: 1; }
+    .combo-item-name { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--gold); }
+    .combo-item-desc { font-size:12px; color:rgba(245,240,232,.5); margin-top:2px; }
+    .combo-item-price { font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--amber); margin-top:4px; }
+
+    .combo-qty-ctrl {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .qty-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255,179,0,.1);
+      color: var(--gold); font-size: 18px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .2s;
+      flex-shrink: 0;
+    }
+    .qty-btn:hover { background: rgba(255,179,0,.2); }
+    .qty-display {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; color: #fff; min-width: 24px; text-align: center;
+    }
+
+    .combo-total-box {
+      background: rgba(255,106,0,.12);
+      border: 1px solid rgba(255,106,0,.3);
+      border-radius: 14px; padding: 14px 18px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px;
+    }
+    .combo-total-label { font-size:13px; color:rgba(245,240,232,.6); font-weight:600; }
+    .combo-total-items { font-size:13px; color:var(--amber); }
+    .combo-total-price {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:32px; color:#fff;
+    }
+    .combo-total-price span { font-size:18px; color:var(--amber); }
+
+    .combo-empty-warning {
+      text-align:center; color:rgba(245,240,232,.35);
+      font-size:13px; padding: 8px 0 12px;
+    }
   </style>
 </head>
 <body>
 
 <nav>
   <a class="nav-logo" href="#inicio" onclick="closeMobile()">
-    <div class="nav-logo-placeholder">🐶</div>
+    <div class="nav-logo-placeholder"><img src="Logo Alto.Bajon.jpg" alt="Alto.Bajón" onerror="this.parentElement.innerHTML='🐶'"/></div>
     <span class="nav-brand">Alto.<span>Bajón</span></span>
   </a>
 
@@ -649,7 +759,7 @@
 <section id="inicio">
   <div class="hero-bg"></div>
 
-  <div class="hero-logo-placeholder">🐶</div>
+  <img src="Logo Alto.Bajon.jpg" alt="Alto.Bajón Logo" class="hero-logo" onerror="this.outerHTML='<div class=\'hero-logo-placeholder\'>🐶</div>'"/>
 
   <p class="hero-eyebrow">🚀 Delivery de hamburguesas</p>
   <h1 class="hero-title">ALTO.<br>BAJÓN</h1>
@@ -684,7 +794,7 @@
 
       <div class="burger-card">
         <div class="burger-img-wrap">
-          <div class="burger-img-placeholder">🍔</div>
+          <img src="burger-cheese.jpg" alt="Cheeseburger Doble" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<div class=\'burger-img-placeholder\'>🍔</div>'"/>
           <span class="qty-badge">x2</span>
           <span class="promo-badge">PROMO</span>
         </div>
@@ -707,7 +817,7 @@
 
       <div class="burger-card">
         <div class="burger-img-wrap">
-          <div class="burger-img-placeholder">🍔</div>
+          <img src="burger-oklahoma.jpg" alt="Oklahoma Burger" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<div class=\'burger-img-placeholder\'>🍔</div>'"/>
           <span class="qty-badge">x2</span>
           <span class="promo-badge">⭐ TOP</span>
         </div>
@@ -730,7 +840,7 @@
 
       <div class="burger-card">
         <div class="burger-img-wrap">
-          <div class="burger-img-placeholder">🥓</div>
+          <img src="burger-bacon.jpg" alt="Doble Bacon y Cheddar" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<div class=\'burger-img-placeholder\'>🥓</div>'"/>
           <span class="qty-badge">x2</span>
           <span class="promo-badge">🔥 HOT</span>
         </div>
@@ -818,7 +928,9 @@
         </div>
       </div>
     </div>
-    <div class="nosotros-img-wrap">🐶</div>
+    <div class="nosotros-img-wrap">
+      <img src="Logo Alto.Bajon.jpg" alt="Alto.Bajón" style="width:100%;height:100%;object-fit:cover;border-radius:18px;" onerror="this.outerHTML='🐶'"/>
+    </div>
   </div>
 </section>
 
@@ -900,6 +1012,86 @@
 <div id="wsp-btn" class="pulse" title="Pedí por WhatsApp" aria-label="WhatsApp">
   <span id="wsp-label">¡Pedí ahora!</span>
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+</div>
+
+<!-- COMBO QUESTIONNAIRE MODAL (triggered by WSP button) -->
+<div class="combo-modal-overlay" id="comboModalOverlay" onclick="cerrarComboModal(event)">
+  <div class="combo-modal-box">
+    <button class="modal-close" onclick="cerrarComboModalBtn()">✕</button>
+    <h3 class="combo-modal-title">🍔 ¿Qué querés pedir?</h3>
+    <p class="combo-modal-subtitle">Elegí uno o más combos, indicá la cantidad y te armamos el pedido.</p>
+
+    <div class="combo-list">
+
+      <!-- Cheeseburger Doble -->
+      <div class="combo-item" id="combo-item-0">
+        <div class="combo-item-img">
+          <img src="burger-cheese.jpg" alt="Cheeseburger" onerror="this.parentElement.innerHTML='🍔'"/>
+        </div>
+        <div class="combo-item-info">
+          <div class="combo-item-name">Cheeseburger Doble</div>
+          <div class="combo-item-desc">1 medallón · Cheddar x2 · Papas x2</div>
+          <div class="combo-item-price">$16.000 c/u</div>
+        </div>
+        <div class="combo-qty-ctrl">
+          <button class="qty-btn" onclick="cambiarQty(0,-1)">−</button>
+          <span class="qty-display" id="qty-0">0</span>
+          <button class="qty-btn" onclick="cambiarQty(0,1)">+</button>
+        </div>
+      </div>
+
+      <!-- Oklahoma Burger -->
+      <div class="combo-item" id="combo-item-1">
+        <div class="combo-item-img">
+          <img src="burger-oklahoma.jpg" alt="Oklahoma" onerror="this.parentElement.innerHTML='🍔'"/>
+        </div>
+        <div class="combo-item-info">
+          <div class="combo-item-name">Oklahoma Burger 🇺🇸</div>
+          <div class="combo-item-desc">2 medallones · Smash · Estilo americano</div>
+          <div class="combo-item-price">$17.000 c/u</div>
+        </div>
+        <div class="combo-qty-ctrl">
+          <button class="qty-btn" onclick="cambiarQty(1,-1)">−</button>
+          <span class="qty-display" id="qty-1">0</span>
+          <button class="qty-btn" onclick="cambiarQty(1,1)">+</button>
+        </div>
+      </div>
+
+      <!-- Doble Bacon y Cheddar -->
+      <div class="combo-item" id="combo-item-2">
+        <div class="combo-item-img">
+          <img src="burger-bacon.jpg" alt="Doble Bacon" onerror="this.parentElement.innerHTML='🥓'"/>
+        </div>
+        <div class="combo-item-info">
+          <div class="combo-item-name">Doble Bacon y Cheddar</div>
+          <div class="combo-item-desc">Bacon crocante · Cheddar extra · + Papas</div>
+          <div class="combo-item-price">$18.000 c/u</div>
+        </div>
+        <div class="combo-qty-ctrl">
+          <button class="qty-btn" onclick="cambiarQty(2,-1)">−</button>
+          <span class="qty-display" id="qty-2">0</span>
+          <button class="qty-btn" onclick="cambiarQty(2,1)">+</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TOTAL -->
+    <div class="combo-total-box">
+      <div>
+        <div class="combo-total-label">Tu pedido</div>
+        <div class="combo-total-items" id="combo-items-summary">Nada seleccionado</div>
+      </div>
+      <div class="combo-total-price"><span>$</span><span id="combo-total-num">0</span></div>
+    </div>
+
+    <p class="combo-empty-warning" id="combo-warning" style="display:none;">⚠️ Seleccioná al menos un combo antes de continuar.</p>
+
+    <button class="btn-enviar-pedido" onclick="continuarConCombo()">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+      Continuar con mi pedido →
+    </button>
+  </div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="cerrarModal(event)">
@@ -1008,11 +1200,78 @@
     cerrarModalBtn();
   }
 
-  // ── WSP DIRECTO (desde botón flotante) ──
+  // ── COMBO QUESTIONNAIRE (WSP button) ──
+  const combos = [
+    { name: 'x2 Cheeseburger Doble + Papas x2', price: 16000 },
+    { name: 'x2 Oklahoma Burger',                price: 17000 },
+    { name: 'x2 Doble Bacon y Cheddar + Papas',  price: 18000 }
+  ];
+  let qtys = [0, 0, 0];
+
+  function cambiarQty(idx, delta) {
+    qtys[idx] = Math.max(0, qtys[idx] + delta);
+    document.getElementById('qty-' + idx).textContent = qtys[idx];
+    const item = document.getElementById('combo-item-' + idx);
+    if (qtys[idx] > 0) item.classList.add('selected');
+    else item.classList.remove('selected');
+    actualizarTotal();
+  }
+
+  function actualizarTotal() {
+    let total = 0;
+    let parts = [];
+    qtys.forEach((q, i) => {
+      if (q > 0) {
+        total += q * combos[i].price;
+        parts.push(q + 'x ' + combos[i].name.split(' + ')[0]);
+      }
+    });
+    document.getElementById('combo-total-num').textContent = total.toLocaleString('es-AR');
+    document.getElementById('combo-items-summary').textContent = parts.length ? parts.join(', ') : 'Nada seleccionado';
+    document.getElementById('combo-warning').style.display = 'none';
+  }
+
+  function abrirComboModal() {
+    // Reset quantities
+    qtys = [0, 0, 0];
+    [0,1,2].forEach(i => {
+      document.getElementById('qty-' + i).textContent = '0';
+      document.getElementById('combo-item-' + i).classList.remove('selected');
+    });
+    actualizarTotal();
+    document.getElementById('comboModalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarComboModalBtn() {
+    document.getElementById('comboModalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function cerrarComboModal(e) {
+    if (e.target === document.getElementById('comboModalOverlay')) cerrarComboModalBtn();
+  }
+
+  function continuarConCombo() {
+    const total = qtys.reduce((sum, q, i) => sum + q * combos[i].price, 0);
+    if (total === 0) {
+      document.getElementById('combo-warning').style.display = 'block';
+      return;
+    }
+    // Build item string for the regular modal
+    let parts = [];
+    qtys.forEach((q, i) => {
+      if (q > 0) parts.push(q + 'x ' + combos[i].name);
+    });
+    const itemStr = parts.join(' + ') + ' — $' + total.toLocaleString('es-AR');
+    cerrarComboModalBtn();
+    abrirModal(itemStr);
+  }
+
+  // ── WSP FLOTANTE → abre combo questionnaire ──
   document.getElementById('wsp-btn').addEventListener('click', function(e) {
     if (this._dragged) { this._dragged = false; return; }
-    const msg = '¡Hola Alto.Bajón! 🍔 Quiero hacer un pedido. ¿Me podés contar las opciones disponibles?';
-    window.open(`https://wa.me/5491140268978?text=${encodeURIComponent(msg)}`, '_blank');
+    abrirComboModal();
   });
 
   // ── DRAG FLOTANTE ──
