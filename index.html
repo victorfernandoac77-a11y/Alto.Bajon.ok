@@ -801,15 +801,15 @@
         <div class="burger-body">
           <h3 class="burger-name">Cheeseburger Doble</h3>
           <div class="burger-tags">
-            <span class="tag">2 medallones </span>
+            <span class="tag">1 medallon </span>
             <span class="tag">Cheddar x2</span>
             <span class="tag">+ Papas x2</span>
           </div>
-          <p class="burger-desc">2 medallones jugosos con doble queso cheddar fundido, pan brioche tostado y papas crujientes. El combo ideal para compartir (o no 😏).</p>
+          <p class="burger-desc">1 medallon jugosos con doble queso cheddar fundido, pan brioche tostado y papas crujientes. El combo ideal para compartir (o no 😏).</p>
           <div class="burger-footer">
             <div class="burger-price"><span>$</span>16.000</div>
             <button class="btn-pedir" onclick="abrirModal('x2 Cheeseburger Doble + Papas x2 — $16.000')">
-              🛒 Disfrutar esta DELICIA!
+              🛒 Pedir
             </button>
           </div>
         </div>
@@ -828,11 +828,11 @@
             <span class="tag">Estilo americano</span>
             <span class="tag">Smash</span>
           </div>
-          <p class="burger-desc">Nuestra burger estrella estilo americano. Doble carne aplastada a la plancha, doble queso cheddar, bacon crujiente y porcion de papas x2.</p>
+          <p class="burger-desc">Nuestra burger estrella estilo americano. Doble carne aplastada a la plancha, queso cheddar, bacon crujiente y porcion de papas x2.</p>
           <div class="burger-footer">
             <div class="burger-price"><span>$</span>17.000</div>
             <button class="btn-pedir" onclick="abrirModal('x2 Oklahoma Burger — $17.000')">
-              🛒 Disfrutar esta DELICIA!
+              🛒 Pedir
             </button>
           </div>
         </div>
@@ -855,7 +855,7 @@
           <div class="burger-footer">
             <div class="burger-price"><span>$</span>18.000</div>
             <button class="btn-pedir" onclick="abrirModal('x2 Doble Bacon y Cheddar + Papas — $18.000')">
-              🛒 Disfrutar esta DELICIA!
+              🛒 Pedir
             </button>
           </div>
         </div>
@@ -904,7 +904,7 @@
   <div class="nosotros-inner">
     <div class="nosotros-text">
       <p class="section-label">🏠 Quiénes somos</p>
-      <h2 class="section-title">ALTO. BAJÓN.</h2>
+      <h2 class="section-title">ALTO.BAJÓN</h2>
       <p class="section-desc">
         Somos Alto.Bajón, nacimos con una sola misión: hacer las burgers más ricas del delivery. Sin vueltas, sin ingredientes mediocres — solo carne real, queso de verdad y ganas de que cada pedido te vuele la cabeza.<br><br>
         Inauguramos en febrero de 2026 y desde el día uno el teléfono no paró de sonar. 🐶🍔
@@ -1269,11 +1269,6 @@
   }
 
   // ── WSP FLOTANTE → abre combo questionnaire ──
-  document.getElementById('wsp-btn').addEventListener('click', function(e) {
-    if (this._dragged) { this._dragged = false; return; }
-    abrirComboModal();
-  });
-
   // ── DRAG FLOTANTE ──
   (function() {
     const el = document.getElementById('wsp-btn');
@@ -1292,7 +1287,7 @@
       origX = p.x; origY = p.y;
       el.style.cursor = 'grabbing';
       el.style.transition = 'none';
-      e.preventDefault();
+      // No preventDefault here on touch so click still fires on mobile
     }
 
     function onMove(e) {
@@ -1300,7 +1295,10 @@
       const pt = e.touches ? e.touches[0] : e;
       const dx = pt.clientX - startX;
       const dy = pt.clientY - startY;
-      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+      if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
+        moved = true;
+        e.preventDefault(); // only prevent scroll when actually dragging
+      }
       let newX = origX + dx;
       let newY = origY + dy;
       const maxX = window.innerWidth  - el.offsetWidth;
@@ -1311,23 +1309,31 @@
       el.style.bottom = 'auto';
       el.style.left   = newX + 'px';
       el.style.top    = newY + 'px';
-      e.preventDefault();
     }
 
-    function onEnd() {
+    function onEnd(e) {
       if (!isDragging) return;
       isDragging = false;
       el.style.cursor = 'grab';
       el.style.transition = '';
-      if (moved) el._dragged = true;
+      if (!moved) {
+        // It was a tap/click — open combo modal
+        abrirComboModal();
+      }
+      moved = false;
     }
 
-    el.addEventListener('mousedown',  onStart, { passive: false });
-    el.addEventListener('touchstart', onStart, { passive: false });
+    el.addEventListener('mousedown',  onStart);
+    el.addEventListener('touchstart', onStart, { passive: true });
     document.addEventListener('mousemove',  onMove,  { passive: false });
     document.addEventListener('touchmove',  onMove,  { passive: false });
     document.addEventListener('mouseup',    onEnd);
     document.addEventListener('touchend',   onEnd);
+
+    // Also handle regular mouse click (desktop)
+    el.addEventListener('click', function() {
+      if (!moved) abrirComboModal();
+    });
   })();
 </script>
 </body>
